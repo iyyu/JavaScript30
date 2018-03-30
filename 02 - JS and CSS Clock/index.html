@@ -9,9 +9,9 @@
 
     <div class="clock">
       <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
+        <div class="hand hours-hand"></div>
+        <div class="hand mins-hand"></div>
+        <div class="hand seconds-hand"></div>
       </div>
     </div>
 
@@ -62,12 +62,38 @@
       background:black;
       position: absolute;
       top:50%;
+      transform: rotate(90deg); 
+      /* rotation of 90 degrees needed because it defaults left to right and we want it to start on the top at 12 */
+      transform-origin: 100%;
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.42, 0, 1, -0.22);
+
     }
 
   </style>
 
   <script>
+  const secondsHand = document.querySelector('.seconds-hand');
+  const minsHand = document.querySelector('.mins-hand');
+  const hoursHand = document.querySelector('.hours-hand');
 
+  function getDate() {
+    const now = new Date();
+    const seconds = now.getSeconds();
+    const secondsDegrees = 90 + ((seconds / 60) * 360);
+    // because of the transform rotate, you want to add 90 to secondsDegrees as well
+    secondsHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+    const mins = now.getMinutes();
+    const minsDegrees = 90 + ((mins / 60) * 360);
+    minsHand.style.transform = `rotate(${minsDegrees}deg)`;
+
+    const hours = now.getHours();
+    const hoursDegrees = 90 + ((hours / 12) * 360);
+    hoursHand.style.transform = `rotate(${hoursDegrees}deg)`;
+    
+  }  
+  setInterval(getDate, 1000);
 
   </script>
 </body>
